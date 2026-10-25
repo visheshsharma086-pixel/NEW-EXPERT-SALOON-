@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>New Expert Saloon | Book Your Visit</title>
+
+  <style>
+    :root {
+      --green: #177547;
+      --green-dark: #105634;
+      --cream: #fff5df;
+      --text: #25372e;
+      --muted: #647168;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #ffffff;
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    /* Decorative background */
+    .background {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.55;
+      animation: float 9s ease-in-out infinite;
+    }
+
+    .bubble:nth-child(1) {
+      width: 280px;
+      height: 280px;
+      background: #d9f7e6;
+      top: -90px;
+      left: -90px;
+    }
+
+    .bubble:nth-child(2) {
+      width: 220px;
+      height: 220px;
+      background: #fff0c9;
+      right: -70px;
+      top: 35%;
+      animation-delay: -3s;
+    }
+
+    .bubble:nth-child(3) {
+      width: 180px;
+      height: 180px;
+      background: #ffe4dd;
+      left: 8%;
+      bottom: -70px;
+      animation-delay: -5s;
+    }
+
+    header {
+      max-width: 1180px;
+      margin: auto;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      background: var(--green);
+      color: white;
+      border-radius: 14px;
+      font-size: 27px;
+    }
+
+    .brand-name {
+      font-size: 21px;
+      font-weight: bold;
+      color: var(--green-dark);
+    }
+
+    .brand-tagline {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .layout {
+      max-width: 1180px;
+      margin: 16px auto 40px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 9px 14px;
+      border-radius: 30px;
+      background: #e7f7ed;
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .hero h1 {
+      margin: 20px 0;
+      font-size: clamp(38px, 5vw, 62px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+    }
+
+    .hero h1 span {
+      color: var(--green);
+    }
+
+    .hero-description {
+      max-width: 440px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* Animated saloon illustration */
+    .scene {
+      margin-top: 24px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #f1fbf5;
+      border: 1px solid #dcefe2;
+    }
+
+    .scene svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .barber-arm {
+      transform-box: fill-box;
+      transform-origin: left center;
+      animation: cutting 1.3s ease-in-out infinite;
+    }
+
+    .customer-head {
+      animation: nod 3s ease-in-out infinite;
+    }
+
+    .waiting-person {
+      animation: waiting 4s ease-in-out infinite;
+    }
+
+    .sparkle {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: twinkle 2s ease-in-out infinite;
+    }
+
+    .sparkle.second {
+      animation-delay: 1s;
+    }
+
+    .pole-stripes {
+      animation: poleMove 2s linear infinite;
+    }
+
+    .scene-caption {
+      margin: 0;
+      padding: 12px;
+      color: var(--green-dark);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .features span {
+      padding: 8px 12px;
+      background: white;
+      border: 1px solid #e1e9e3;
+      border-radius: 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* Form card */
+    .card {
+      padding: 30px;
+      background: white;
+      border: 1px solid #e1e9e3;
+      border-radius: 24px;
+      box-shadow: 0 18px 60px rgba(25, 90, 52, 0.09);
+    }
+
+    .screen {
+      animation: screenEnter 0.45s ease both;
+    }
+
+    .step {
+      color: var(--green);
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+    }
+
+    h2 {
+      margin: 12px 0;
+      font-size: 29px;
+      letter-spacing: -0.7px;
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    label,
+    legend {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 12px;
+      background: var(--cream);
+      color: var(--text);
+      border: 1px solid #d8cfb8;
+      border-radius: 10px;
+      color-scheme: light;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder {
+      color: #797464;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px #e3f3e9;
+    }
+
+    fieldset {
+      min-width: 0;
+      margin: 20px 0 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .time-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .time-row label {
+      margin: 10px 0 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+    button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 22px;
+      padding: 14px;
+      background: var(--green);
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    button:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .secondary {
+      margin-top: 10px;
+      background: white;
+      color: var(--green);
+      border: 1px solid #bfd8c8;
+    }
+
+    .secondary:hover {
+      background: #edf8f1;
+    }
+
+    :focus-visible {
+      outline: 3px solid #197749;
+      outline-offset: 3px;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .error {
+      color: #a32323;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .error:empty {
+      display: none;
+    }
+
+    .demo-code {
+      padding: 18px;
+      border: 1px dashed var(--green);
+      border-radius: 12px;
+      background: #edf9f1;
+      color: var(--green-dark);
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    #otp {
+      text-align: center;
+      font-size: 25px;
+      letter-spacing: 6px;
+    }
+
+    .success {
+      text-align: center;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      margin: 10px auto 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e3f6e9;
+      color: var(--green);
+      font-size: 44px;
+      animation: successPop 0.6s ease both;
+    }
+
+    .summary {
+      margin: 22px 0;
+      padding: 18px;
+      border-radius: 12px;
+      background: var(--cream);
+      text-align: left;
+    }
+
+    .summary p {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+
+    .message {
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      padding: 16px 24px 24px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-25px); }
+    }
+
+    @keyframes cutting {
+      0%, 100% { transform: rotate(-8deg); }
+      50% { transform: rotate(8deg); }
+    }
+
+    @keyframes nod {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(3px); }
+    }
+
+    @keyframes waiting {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.35; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    @keyframes poleMove {
+      from { transform: translateY(-24px); }
+      to { transform: translateY(0); }
+    }
+
+    @keyframes screenEnter {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes successPop {
+      from { opacity: 0; transform: scale(0.6); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        max-width: 580px;
+      }
+
+      .hero h1 {
+        font-size: 43px;
+      }
+
+      header {
+        max-width: 580px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .card {
+        padding: 24px 18px;
+      }
+
+      .layout {
+        padding: 0 16px;
+      }
+
+      .brand-name {
+        font-size: 18px;
+      }
+
+      .time-row {
+        gap: 6px;
+      }
+
+      select {
+        padding: 10px 6px;
+      }
+    }
+
+    /* Respect the device's reduced-motion preference. */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+  </div>
+
+  <header>
+    <div class="brand-icon" aria-hidden="true">✂</div>
+    <div>
+      <div class="brand-name">New Expert Saloon</div>
+      <div class="brand-tagline">Fresh cuts. Happy customers.</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Animated saloon illustration -->
+    <section class="hero" aria-label="Welcome to our saloon">
+      <span class="badge">A warm welcome awaits you</span>
+
+      <h1>Your next<br><span>fresh look.</span></h1>
+
+      <p class="hero-description">
+        Welcome to New Expert Saloon.
+        Choose your date and time, sit back, and let your
+        next great look begin.
+      </p>
+
+      <div class="scene">
+        <svg
+          viewBox="0 0 520 350"
+          role="img"
+          aria-labelledby="scene-title scene-description"
+        >
+          <title id="scene-title">Animated New Expert Saloon</title>
+          <desc id="scene-description">
+            A barber styles a customer's hair while another
+            customer waits inside a bright saloon.
+          </desc>
+
+          <defs>
+            <clipPath id="pole-clip">
+              <rect x="43" y="133" width="23" height="116" rx="9"/>
+            </clipPath>
+          </defs>
+
+          <!-- Building and sign -->
+          <rect width="520" height="350" fill="#effaf3"/>
+          <circle cx="445" cy="49" r="24" fill="#ffe69d"/>
+          <rect x="79" y="56" width="370" height="255"
+                rx="13" fill="#ffffff" stroke="#c4dfce" stroke-width="3"/>
+          <rect x="99" y="71" width="330" height="42"
+                rx="8" fill="#177547"/>
+          <text x="264" y="97" text-anchor="middle"
+                fill="white" font-family="Arial, sans-serif"
+                font-size="18" font-weight="bold">
+            NEW EXPERT SALOON
+          </text>
+
+          <!-- Awning -->
+          <path d="M89 120 H439 L450 151 H78 Z" fill="#ffe4a6"/>
+          <path d="M112 120 H145 L140 151 H105 Z" fill="#70ba91"/>
+          <path d="M178 120 H211 L210 151 H175 Z" fill="#70ba91"/>
+          <path d="M244 120 H277 L280 151 H245 Z" fill="#70ba91"/>
+          <path d="M310 120 H343 L350 151 H315 Z" fill="#70ba91"/>
+          <path d="M376 120 H409 L420 151 H385 Z" fill="#70ba91"/>
+
+          <!-- Interior -->
+          <rect x="98" y="158" width="330" height="141"
+                rx="5" fill="#fff6e4"/>
+          <rect x="117" y="171" width="90" height="91"
+                rx="20" fill="#d8eee7" stroke="#d6ad68" stroke-width="5"/>
+          <path d="M130 193 L161 179 M134 209 L182 186"
+                stroke="white" stroke-width="5" opacity=".7"/>
+          <rect x="112" y="266" width="107" height="9"
+                rx="4" fill="#c99159"/>
+
+          <!-- Clock -->
+          <circle cx="324" cy="184" r="19"
+                  fill="white" stroke="#177547" stroke-width="3"/>
+          <path d="M324 172 V184 L334 190"
+                fill="none" stroke="#177547"
+                stroke-width="3" stroke-linecap="round"/>
+
+          <!-- Barber pole -->
+          <rect x="39" y="124" width="31" height="9"
+                rx="4" fill="#325346"/>
+          <rect x="43" y="133" width="23" height="116"
+                rx="9" fill="white"/>
+          <g clip-path="url(#pole-clip)">
+            <g class="pole-stripes"
+               stroke-width="9">
+              <path d="M25 142 L82 114 M25 190 L82 162
+                       M25 238 L82 210 M25 286 L82 258"
+                    stroke="#ec7770"/>
+              <path d="M25 166 L82 138 M25 214 L82 186
+                       M25 262 L82 234"
+                    stroke="#63a5cf"/>
+            </g>
+          </g>
+          <rect x="39" y="249" width="31" height="9"
+                rx="4" fill="#325346"/>
+
+          <!-- Barber -->
+          <path d="M230 239 L226 297 M247 239 L253 297"
+                stroke="#304c40" stroke-width="13"
+                stroke-linecap="round"/>
+          <path d="M217 203 Q237 190 255 205 L259 253 H214 Z"
+                fill="#177547"/>
+          <path d="M227 201 L237 215 L247 201"
+                fill="white"/>
+          <circle cx="237" cy="181" r="19" fill="#e8ac83"/>
+          <path d="M218 180 Q213 156 237 157
+                   Q260 158 255 180 L248 171 L222 174 Z"
+                fill="#303a33"/>
+          <circle cx="244" cy="182" r="2" fill="#303a33"/>
+
+          <g class="barber-arm">
+            <path d="M221 212 L194 194 L179 195"
+                  fill="none" stroke="#e8ac83"
+                  stroke-width="10" stroke-linecap="round"/>
+            <!-- Scissors -->
+            <circle cx="174" cy="193" r="4"
+                    fill="none" stroke="#53655b" stroke-width="2"/>
+            <circle cx="177" cy="201" r="4"
+                    fill="none" stroke="#53655b" stroke-width="2"/>
+            <path d="M178 194 L191 187 M180 199 L193 200"
+                  stroke="#53655b" stroke-width="2"
+                  stroke-linecap="round"/>
+          </g>
+
+          <!-- Customer and barber chair -->
+          <rect x="146" y="247" width="43" height="27"
+                rx="8" fill="#df936d"/>
+          <path d="M168 274 V297 M151 299 H185"
+                stroke="#53655b" stroke-width="7"
+                stroke-linecap="round"/>
+          <path d="M147 220 Q165 210 184 220 L195 251 H135 Z"
+                fill="#8ac5aa"/>
+
+          <g class="customer-head">
+            <circle cx="165" cy="204" r="18" fill="#edb88d"/>
+            <path d="M147 204 Q141 181 164 183
+                     Q186 182 184 203 L175 194 L151 197 Z"
+                  fill="#49372d"/>
+            <circle cx="172" cy="205" r="2" fill="#49372d"/>
+          </g>
+
+          <!-- Waiting customer -->
+          <rect x="337" y="257" width="70" height="12"
+                rx="5" fill="#d6a065"/>
+          <path d="M346 269 V298 M398 269 V298"
+                stroke="#96734d" stroke-width="6"/>
+
+          <g class="waiting-person">
+            <path d="M359 254 L354 294 M378 254 L389 294"
+                  stroke="#395c74" stroke-width="10"
+                  stroke-linecap="round"/>
+            <path d="M350 220 Q367 211 383 221 L389 254 H346 Z"
+                  fill="#e9ad62"/>
+            <circle cx="367" cy="202" r="17" fill="#bb7e5b"/>
+            <path d="M350 202 Q345 179 367 181
+                     Q389 179 385 204 L377 193 L354 195 Z"
+                  fill="#34332e"/>
+            <path d="M353 231 L365 243 L380 233"
+                  fill="none" stroke="#bb7e5b"
+                  stroke-width="8" stroke-linecap="round"/>
+            <rect x="375" y="224" width="10" height="17"
+                  rx="2" fill="#395c74"/>
+          </g>
+
+          <!-- Plant -->
+          <path d="M462 285 V247" stroke="#39835a" stroke-width="4"/>
+          <ellipse cx="452" cy="254" rx="8" ry="17"
+                   fill="#70ba91" transform="rotate(-30 452 254)"/>
+          <ellipse cx="472" cy="244" rx="8" ry="17"
+                   fill="#39835a" transform="rotate(30 472 244)"/>
+          <path d="M448 281 H478 L473 307 H453 Z" fill="#dc9a74"/>
+
+          <!-- Floor -->
+          <path d="M68 311 H459" stroke="#b6d7c3"
+                stroke-width="5" stroke-linecap="round"/>
+
+          <!-- Animated sparkles -->
+          <path class="sparkle"
+                d="M300 222 L304 233 L315 237
+                   L304 241 L300 252 L296 241
+                   L285 237 L296 233 Z"
+                fill="#edbc55"/>
+          <path class="sparkle second"
+                d="M106 37 L109 45 L117 48
+                   L109 51 L106 59 L103 51
+                   L95 48 L103 45 Z"
+                fill="#70ba91"/>
+        </svg>
+
+        <p class="scene-caption">
+          A little care. A fresh cut. A happy you.
+        </p>
+      </div>
+
+      <div class="features">
+        <span>✂ Fresh styles</span>
+        <span>📅 Pick your date</span>
+        <span>🕒 Choose your time</span>
+      </div>
+    </section>
+
+    <!-- Interactive form -->
+    <div class="card">
+      <!-- Screen 1 -->
+      <section id="details-screen" class="screen">
+        <div class="step">Step 1 · Your visit</div>
+        <h2>Book your fresh look</h2>
+        <p class="subtitle">
+          Enter your details and choose when you would like to visit.
+        </p>
+
+        <form id="details-form">
+          <label for="name">Your name</label>
+          <input
+            id="name"
+            type="text"
+            autocomplete="name"
+            placeholder="Enter your full name"
+            maxlength="80"
+            required
+          >
+
+          <label for="mobile">Mobile number</label>
+          <input
+            id="mobile"
+            type="tel"
+            autocomplete="tel-national"
+            inputmode="numeric"
+            pattern="[0-9]{10}"
+            maxlength="10"
+            placeholder="Enter your 10-digit mobile number"
+            title="Please enter a 10-digit mobile number."
+            required
+          >
+
+          <label for="date">📅 Appointment date</label>
+          <input id="date" type="date" required>
+
+          <fieldset aria-describedby="time-note">
+            <legend>🕒 Appointment time</legend>
+
+            <div class="time-row">
+              <div>
+                <label for="hour">Hour</label>
+                <select id="hour" required>
+                  <option value="">Hour</option>
+                  <option value="1">01</option>
+                  <option value="2">02</option>
+                  <option value="3">03</option>
+                  <option value="4">04</option>
+                  <option value="5">05</option>
+                  <option value="6">06</option>
+                  <option value="7">07</option>
+                  <option value="8">08</option>
+                  <option value="9">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="minute">Minutes</label>
+                <select id="minute" required>
+                  <option value="">Min</option>
+                  <option value="00">00</option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="45">45</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="period">AM / PM</label>
+                <select id="period" required>
+                  <option value="">AM/PM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <p id="time-note" class="note">
+            Choose a future time. Times follow your device's local
+            time zone.
+          </p>
+
+          <p id="details-error" class="error" role="alert"></p>
+
+          <button type="submit">Send Demo OTP →</button>
+        </form>
+
+        <p class="note">
+          Practice mode: OTP appears on screen. No SMS is sent.
+        </p>
+      </section>
+
+      <!-- Screen 2 -->
+      <section id="otp-screen" class="screen" hidden>
+        <div class="step">Step 2 · Demo verification</div>
+        <h2>One more step 🔐</h2>
+
+        <p id="mobile-message" class="subtitle"></p>
+        <p class="note">
+          Enter the demo OTP below. It expires in 2 minutes.
+        </p>
+
+        <p id="demo-code" class="demo-code" role="status"></p>
+
+        <form id="otp-form">
+          <label for="otp">Enter 6-digit OTP</label>
+          <input
+            id="otp"
+            type="text"
+            placeholder="000000"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            pattern="[0-9]{6}"
+            maxlength="6"
+            title="Please enter a 6-digit OTP."
+            aria-describedby="otp-error"
+            required
+          >
+
+          <p id="otp-error" class="error" role="alert"></p>
+
+          <button type="submit">Verify OTP & Login →</button>
+        </form>
+
+        <button id="resend-button" type="button" class="secondary">
+          Generate New Demo OTP
+        </button>
+
+        <button id="edit-button" type="button" class="secondary">
+          Edit My Details
+        </button>
+      </section>
+
+      <!-- Screen 3 -->
+      <section id="thank-you-screen" class="screen success" hidden>
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <div class="step">You're welcome here</div>
+
+        <h2 id="thank-you-heading" tabindex="-1">Thank you!</h2>
+
+        <p id="thank-you-message" class="message"></p>
+
+        <div class="summary">
+          <p>
+            <strong>📅 Date:</strong>
+            <span id="summary-date"></span>
+          </p>
+          <p>
+            <strong>🕒 Time:</strong>
+            <span id="summary-time"></span>
+          </p>
+        </div>
+
+        <p class="message">
+          Have a nice day!<br>
+          Thanking you,<br>
+          <strong>New Expert Saloon Team</strong>
+        </p>
+
+        <p class="note">
+          Demo confirmation only. No real appointment is saved
+          or reserved until a backend and database are connected.
+        </p>
+
+        <button id="home-button" type="button">
+          Back to Home
+        </button>
+      </section>
+
+      <noscript>
+        <p>Please enable JavaScript to use this appointment demo.</p>
+      </noscript>
+    </div>
+  </main>
+
+  <footer>
+    New Expert Saloon · A warm welcome, every time.
+  </footer>
+
+  <script>
+    const detailsScreen = document.getElementById("details-screen");
+    const otpScreen = document.getElementById("otp-screen");
+    const thankYouScreen = document.getElementById("thank-you-screen");
+
+    const detailsForm = document.getElementById("details-form");
+    const otpForm = document.getElementById("otp-form");
+
+    const nameInput = document.getElementById("name");
+    const mobileInput = document.getElementById("mobile");
+    const dateInput = document.getElementById("date");
+    const hourInput = document.getElementById("hour");
+    const minuteInput = document.getElementById("minute");
+    const periodInput = document.getElementById("period");
+    const otpInput = document.getElementById("otp");
+
+    const detailsError = document.getElementById("details-error");
+    const otpError = document.getElementById("otp-error");
+    const demoCode = document.getElementById("demo-code");
+
+    let customer = null;
+    let currentOtp = "";
+    let expiresAt = 0;
+    let attempts = 0;
+
+    function localToday() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    }
+
+    dateInput.min = localToday();
+
+    function showScreen(screen) {
+      detailsScreen.hidden = true;
+      otpScreen.hidden = true;
+      thankYouScreen.hidden = true;
+
+      screen.hidden = false;
+    }
+
+    function getAppointmentDate() {
+      let hour = Number(hourInput.value) % 12;
+
+      if (periodInput.value === "PM") {
+        hour += 12;
+      }
+
+      const formattedHour = String(hour).padStart(2, "0");
+
+      return new Date(
+        `${dateInput.value}T${formattedHour}:${minuteInput.value}:00`
+      );
+    }
+
+    function generateDemoOtp() {
+      // Practice only: this is not secure authentication.
+      currentOtp = String(
+        Math.floor(100000 + Math.random() * 900000)
+      );
+
+      expiresAt = Date.now() + 120000;
+      attempts = 0;
+
+      otpInput.value = "";
+      otpError.textContent = "";
+      demoCode.textContent = "Demo OTP: " + currentOtp;
+    }
+
+    function returnToDetails() {
+      currentOtp = "";
+      expiresAt = 0;
+
+      otpInput.value = "";
+      otpError.textContent = "";
+      demoCode.textContent = "";
+
+      dateInput.min = localToday();
+      showScreen(detailsScreen);
+
+      document.title = "New Expert Saloon | Appointment";
+      nameInput.focus();
+    }
+
+    nameInput.addEventListener("input", function () {
+      nameInput.setCustomValidity("");
+    });
+
+    detailsForm.addEventListener("input", function () {
+      detailsError.textContent = "";
+    });
+
+    detailsForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = nameInput.value.trim();
+
+      if (!name) {
+        nameInput.setCustomValidity("Please enter your name.");
+        nameInput.reportValidity();
+        return;
+      }
+
+      const appointment = getAppointmentDate();
+
+      if (
+        !Number.isFinite(appointment.getTime()) ||
+        appointment <= new Date()
+      ) {
+        detailsError.textContent =
+          "Please choose a future appointment date and time.";
+        dateInput.focus();
+        return;
+      }
+
+      customer = {
+        name: name,
+        mobile: mobileInput.value,
+        appointment: appointment
+      };
+
+      document.getElementById("mobile-message").textContent =
+        "Demo verification for mobile ending in " +
+        customer.mobile.slice(-4) + ".";
+
+      generateDemoOtp();
+      showScreen(otpScreen);
+
+      document.title = "Verify OTP | New Expert Saloon";
+      otpInput.focus();
+    });
+
+    otpInput.addEventListener("input", function () {
+      otpError.textContent = "";
+    });
+
+    otpForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (!currentOtp) {
+        otpError.textContent =
+          "Please generate a new demo OTP.";
+        return;
+      }
+
+      if (Date.now() >= expiresAt) {
+        currentOtp = "";
+        demoCode.textContent = "OTP expired";
+        otpError.textContent =
+          "Your OTP has expired. Generate a new demo OTP.";
+        return;
+      }
+
+      if (otpInput.value.trim() !== currentOtp) {
+        attempts++;
+
+        if (attempts >= 5) {
+          currentOtp = "";
+          demoCode.textContent = "New OTP required";
+          otpError.textContent =
+            "Too many incorrect attempts. Generate a new OTP.";
+        } else {
+          otpError.textContent =
+            "Incorrect OTP. Enter the code shown above.";
+        }
+
+        return;
+      }
+
+      if (!customer || customer.appointment <= new Date()) {
+        returnToDetails();
+
+        detailsError.textContent =
+          "That appointment time has passed. Choose a future time.";
+        dateInput.focus();
+        return;
+      }
+
+      currentOtp = "";
+      otpInput.value = "";
+      demoCode.textContent = "";
+
+      document.getElementById("thank-you-message").textContent =
+        "Thank you, dear " + customer.name +
+        "! Your appointment has been submitted.";
+
+      document.getElementById("summary-date").textContent =
+        customer.appointment.toLocaleDateString("en-IN", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+
+      document.getElementById("summary-time").textContent =
+        customer.appointment.toLocaleTimeString("en-IN", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        });
+
+      showScreen(thankYouScreen);
+
+      document.title = "Thank You | New Expert Saloon";
+      document.getElementById("thank-you-heading").focus();
+    });
+
+    document.getElementById("resend-button").addEventListener(
+      "click",
+      function () {
+        generateDemoOtp();
+        otpInput.focus();
+      }
+    );
+
+    document.getElementById("edit-button").addEventListener(
+      "click",
+      returnToDetails
+    );
+
+    document.getElementById("home-button").addEventListener(
+      "click",
+      function () {
+        detailsForm.reset();
+        otpForm.reset();
+        nameInput.setCustomValidity("");
+
+        customer = null;
+        attempts = 0;
+        detailsError.textContent = "";
+
+        document.getElementById("thank-you-message").textContent = "";
+        document.getElementById("summary-date").textContent = "";
+        document.getElementById("summary-time").textContent = "";
+
+        returnToDetails();
+      }
+    );
+  </script>
+</body>
+</html>
